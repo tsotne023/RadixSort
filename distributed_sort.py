@@ -1,12 +1,15 @@
-# Distributed Sort
-# 4 server-i alagebs monacems erTad
-# problema: monacemi skewed-ia, naive partition ar mushaobs
-# gadawyveta: sampling-based boundary-ebi
+# Distributed Sort - 4 სერვერი ერთად ალაგებს მონაცემს
+#
+# პრობლემა: მონაცემი skewed-ია (80% არის [0, 0.1)-ში).
+# თუ თანაბრად დავყოფთ - ერთი სერვერი იღებს უმეტესობას.
+# გადაწყვეტა: ვიღებთ ნიმუშს და ვირჩევთ boundary-ებს მისგან.
 
 import random
+import sys
+sys.stdout.reconfigure(encoding='utf-8')   # Windows-ისთვის ქართული print
 
-# vqmnit 4 server-is monacems
-# titoshi 10000 element, 80% patara ricxvi
+# ვქმნით 4 სერვერის მონაცემს
+# თითოში 10000 ელემენტი, 80% პატარა რიცხვი
 server0 = []
 server1 = []
 server2 = []
@@ -45,17 +48,17 @@ for i in range(10000):
     server3.append(x)
 
 
-# === VERSION 1: NAIVE ===
-# tanabrad vyofT [0, 1) - oTx natilad
+# === ვერსია 1: NAIVE ===
+# თანაბრად ვყოფთ [0, 1) ოთხ ნაწილად
 
-print("NAIVE:")
+print("ვერსია 1: NAIVE (თანაბრად დაყოფა)")
 
 c0 = 0
 c1 = 0
 c2 = 0
 c3 = 0
 
-# server 0-is monacemi
+# სერვერ 0-ის მონაცემი
 for i in range(10000):
     x = server0[i]
     if x < 0.25:
@@ -67,7 +70,7 @@ for i in range(10000):
     else:
         c3 = c3 + 1
 
-# server 1-is monacemi
+# სერვერ 1-ის მონაცემი
 for i in range(10000):
     x = server1[i]
     if x < 0.25:
@@ -79,7 +82,7 @@ for i in range(10000):
     else:
         c3 = c3 + 1
 
-# server 2-is monacemi
+# სერვერ 2-ის მონაცემი
 for i in range(10000):
     x = server2[i]
     if x < 0.25:
@@ -91,7 +94,7 @@ for i in range(10000):
     else:
         c3 = c3 + 1
 
-# server 3-is monacemi
+# სერვერ 3-ის მონაცემი
 for i in range(10000):
     x = server3[i]
     if x < 0.25:
@@ -103,19 +106,19 @@ for i in range(10000):
     else:
         c3 = c3 + 1
 
-print("server 0:", c0)
-print("server 1:", c1)
-print("server 2:", c2)
-print("server 3:", c3)
+print("სერვერი 0:", c0)
+print("სერვერი 1:", c1)
+print("სერვერი 2:", c2)
+print("სერვერი 3:", c3)
 
 
-# === VERSION 2: SAMPLING ===
-# vigebt nimushs, vrCevT boundary-ebs nimushidan
+# === ვერსია 2: SAMPLING ===
+# ვიღებთ ნიმუშს, ვირჩევთ boundary-ებს ნიმუშიდან
 
 print("")
-print("SAMPLING:")
+print("ვერსია 2: SAMPLING (ნიმუშის მიხედვით)")
 
-# vagrovebT 100-100 element tito server-idan
+# ვაგროვებთ 100-100 ელემენტს თითო სერვერიდან
 sample = []
 for i in range(100):
     idx = random.randint(0, 9999)
@@ -132,7 +135,7 @@ for i in range(100):
 
 sample.sort()
 
-# boundary-ebi - 1/4, 2/4, 3/4 adgilebidan
+# boundary-ები - 1/4, 2/4, 3/4 ადგილებიდან
 b1 = sample[100]
 b2 = sample[200]
 b3 = sample[300]
@@ -141,7 +144,7 @@ print("b1 =", b1)
 print("b2 =", b2)
 print("b3 =", b3)
 
-# ahla iseve vTvliT
+# ისევ ვითვლით, ოღონდ ახალი boundary-ებით
 c0 = 0
 c1 = 0
 c2 = 0
@@ -191,7 +194,7 @@ for i in range(10000):
     else:
         c3 = c3 + 1
 
-print("server 0:", c0)
-print("server 1:", c1)
-print("server 2:", c2)
-print("server 3:", c3)
+print("სერვერი 0:", c0)
+print("სერვერი 1:", c1)
+print("სერვერი 2:", c2)
+print("სერვერი 3:", c3)
